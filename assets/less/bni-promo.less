@@ -1,0 +1,122 @@
+#bniPromo{
+	background-color: rgba(241, 241, 241, 0.33);
+	.col-md-push-1{
+		@media(min-width: 991px){
+			left: 12.333333% !important;
+		}
+	}
+	.top-content{
+		height: 400px;
+		background-color: #01525e;
+		@media(min-width: 320px) and (max-width: 475px){
+			height: 190px;
+		}
+		@media(min-width: 480px) and (max-width: 600px){
+			height: 275px;
+		}
+		@media(min-width: 768px) and (max-width: 992px){
+			height: 350px;
+		}
+		.main-banner{
+			height: 400px;
+    		background: url(https://s7.postimg.org/k2xkcckqz/rei-expo-489x219-newsletter.jpg) center center no-repeat;
+    		background-size: contain;
+		}
+	}
+	.bottom-content{
+		padding: 60px 0;
+    	/* border-top: 8px solid #01525e; */
+    	.dev-list{
+    		.row{
+    			margin-bottom: 45px;
+    			&:last-child{
+    				margin-bottom: 0;
+    			}
+    			@media(max-width: 992px){
+    				margin-bottom: 0;
+    			}
+    			.dev-detail{
+	    			display: block;
+				    max-height: 178px;
+				    margin: 0 15px;
+				    padding: 15px;
+				    background-color: #fff;
+				    border: 1px solid #eee;
+				    box-shadow: 4px 4px 12px rgba(255, 124, 0, 0.10);
+				    -webkit-transition: all .2s;
+				    -moz-transition: all .2s;
+				    transition: all .2s;
+				    @media(max-width: 600px){
+				    	margin: 0;
+				    }
+				    @media(max-width: 992px){
+				    	margin-bottom: 30px;
+				    }
+				    @media(min-width: 768px) and (max-width: 992px){
+				    	width: 80%;
+				    	margin-right: auto;
+				    	margin-left: auto;
+				    }
+				    &:hover{
+				    	box-shadow: none;
+	    				border-color: #e5e5e5;
+	    				text-decoration: none;
+				    }
+				    .dev-logo{
+				    	max-width: 250px;
+    					height: 100px;
+    					position: relative;
+    					img{
+    						max-height: 100px;
+    						width: auto;
+    						position: absolute;
+    						top: 0;
+    						bottom: 0;
+    						left: 0;
+    						right: 0;
+    						margin: auto;
+    					}
+				    }
+				    .dev-info{
+				    	h3{
+				    		@media(max-width: 1024px){
+				    			font-size: 12px;
+				    		}
+				    	}
+				    }
+	    		}
+    		}
+    	}
+	}
+	#bniPromoFooter{
+		.footer-note{
+			@media(max-width: 475px){
+				font-size: 10px;
+			}
+		}
+		.green-bg{
+			background: #01525e;
+		    padding: 10px;
+		    color: #fff;
+		}
+		.bank-link{
+			margin: 8px 0;
+			a{
+				display: inline-block;
+    			padding-right: 15px;
+    			@media(max-width: 475px){
+					font-size: 10px;
+				}
+			}
+			p{
+				display: inline-block;
+			    margin: 0;
+			    padding: 0 15px;
+			    border-left: 1px solid #aaa;
+			    @media(max-width: 475px){
+					font-size: 10px;
+				}
+			}
+		}
+	}
+}

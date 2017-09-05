@@ -1,0 +1,102 @@
+#kpr-bri {
+    .kpr-calculator {
+        .banner-kpr {
+            img {
+                margin-top: 0 !important;
+            }
+            @media only screen and (max-width: 770px) {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        .bri-calc {
+            padding: 15px 15px 0 15px;
+            display: block;
+            text-align: center;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            -khtml-border-radius: 10px;
+            border-radius: 10px;
+            color: #fff;
+            text-align: left;
+            .form-horizontal {
+                margin: 15px 0px;
+                .kpr-title {
+                    h1 {
+                        font-size: 1.7em;
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                }
+            }
+            .form-group {
+                .text-right {
+                    span {
+                        color: #e1091d;
+                    }
+                }
+                .drop-down-arrow {
+                    z-index:20;
+                    color: #6b6b6b;
+                    position: absolute;
+                    right: 30px;
+                    top: 10px;
+                }
+                .input-error {
+                    list-style: none !important;
+                    font-weight: normal;
+                    font-size: 12px;
+                    position: absolute;
+                    top: -7px;
+                    @media only screen and (min-device-width: 320px) and (max-device-width: 768px) {
+                        top: 1px;
+                    }
+                    right: 35px;
+                    color: #a94442;
+                    z-index: 10;
+                }
+            }
+            .required {
+                >label {
+                    &:after {
+                        content: "";
+                        color: #e1091d;
+                    }
+                }
+                >.ttp {
+                    &.special {
+                        &:after {
+                            content: "";
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .kpr-form-calculator{
+        .drop-down-arrow {
+                    z-index:20;
+                    color: #6b6b6b;
+                    position: absolute;
+                    right: 30px;
+                    top: 10px;
+                }
+    }
+    .result-table{
+        td{
+            text-align: left;
+            padding: 5px 20px;
+        }
+    }
+    .bri-result {
+        padding: 0 30px !important;
+    }
+    .show-display {
+        display: inherit;
+    }
+    .hide-display {
+        display: none;
+    }
+}

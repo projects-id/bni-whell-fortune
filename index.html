@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>bni-wheel-of-fortune</title>
+    <link rel="stylesheet" href="assets/less/bni-wheel-of-fortune.css">
+    <link rel="stylesheet" type="text/css" href="vendors/Animation-css/animate.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    @font-face {
+        font-family: 'Gotham-Light';
+        src:url('https://www.rumah123.com/fonts/gotham/gotham-light-webfont.eot'),
+        url('https://www.rumah123.com/fonts/gotham/gotham-light-webfont.woff') format('woff'),
+        url('https://www.rumah123.com/fonts/gotham/gotham-light-webfont.ttf') format('truetype');
+        font-weight:normal;
+        font-style:normal
+    }
+    body {
+        font-family: 'Gotham-Light' !important;
+    }
+
+    .header-main {
+      padding: 100px 0;
+      position: absolute;
+      color: #fff;
+    }
+
+    .info-fortune {
+        position: fixed;
+        top: 20px;
+        left: 0;
+        cursor: pointer;
+        z-index: 1000;
+        padding: 4px 15px 5px;
+        background: #0081c6;
+        border-radius: 0 30px 30px 0px;
+        box-shadow: 0px 3px 10px #676565;
+    }
+    .info-fortune span {
+        vertical-align: middle;
+    }
+    .info-fortune .bars {
+        display: block;
+        position: relative;
+        width: 35px;
+        height: 5px;
+        background-color: rgba(18, 59, 61, 0.7);
+        -webkit-transition: all 0.2s ease;
+        -moz-transition: all 0.2s ease;
+        -ms-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+    }
+    .info-fortune .bars:before, .info-fortune .bars:after {
+        position: absolute;
+        content: " ";
+        width: 100%;
+        height: 5px;
+        background-color: rgba(18, 59, 61, 0.7);
+        -webkit-transition: all 0.2s ease;
+        -moz-transition: all 0.2s ease;
+        -ms-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+    }
+    .info-fortune .bars:before {
+        top: 10px;
+    }
+    .info-fortune .bars:after {
+        bottom: 10px;
+    }
+
+    .open .info-fortune .bars {
+        background-color: transparent;
+        -webkit-transition: all 0.2s ease;
+        -moz-transition: all 0.2s ease;
+        -ms-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+    }
+    .open .info-fortune .bars::before {
+        top: 0;
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
+    .open .info-fortune .bars::after {
+        bottom: 0;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    .menu {
+        width: 42%;
+        height: 100%;
+        padding: 75px 20px 0;
+        background-color: rgba(0, 0, 0, 0.84);
+        position: fixed;
+        right: -100%;
+        top: 0;
+        opacity: 0;
+        z-index: 999;
+        margin-top: 0;
+        -webkit-transition: all 0.2s ease;
+        -moz-transition: all 0.2s ease;
+        -ms-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+        letter-spacing: 1px;
+    }
+    @media(min-width: 480px) and (max-width: 768px){
+       .menu{
+            width: 100%;
+       }
+    }
+    .menu a {
+      color: WhiteSmoke;
+    }
+    .menu a:hover {
+      color: white;
+    }
+    
+    .menu ol{
+        margin-left: 20px;
+    }
+    .open .menu {
+        left: 0;
+        opacity: 1;
+        -webkit-transition: all 0.2s ease;
+        -moz-transition: all 0.2s ease;
+        -ms-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+    }
+
+    .menu:hover {
+        overflow-y: auto;
+    }
+    
+    .required>label:after{
+        color: #e1091d;
+        content: " *";
+    }
+    .red-class{
+        color: #D50014 !important;
+        padding: 3px; 
+    }
+    
+    .bottom-space{
+        margin-bottom: 10px;
+    }
+
+    .alert.alert-danger.notice-undian {
+        display: -webkit-inline-box;
+        width: 100%;
+    }
+    .alert.alert-danger.notice-undian p{
+        margin-left: 10px;
+     }
+
+     .modal-success{
+        text-align: -webkit-center;
+        border: 0px;
+        margin-bottom: -30px;
+     }
+     #success p{
+        font-size: 20px;
+     }
+
+     .text-success{
+        font-weight: bold;
+        font-size: 24px;
+     }
+
+     .text-failed{
+        font-weight: bold;
+        font-size: 24px;
+     }
+</style>
+<body>
+    <div id="wrapper-wof">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-5 col-sm-12">
+                    <header class="header-main">
+                      <nav class="navigation">
+                        <div class="info-fortune">
+                          <span><i class="fa fa-info-circle fa-3x" aria-hidden="true"></i></span>
+                        </div>
+                        <div class="menu">
+                            <h2>Syarat dan Ketentuan:</h2>
+                            <ul>
+                                <li>“123 Surprise” applikasi mobile game adalah sebuah program mobile game online yang diadakan oleh PT. Web Marketing Indonesia Tbk.</li>
+                                <li>Promosi ini terbuka untuk WNI, Usia 25 – 60 Tahun, memiliki Email Pribadi dan No.HP.</li>
+                                <li>Peserta wajib log-in dengan menggunakan Form Peserta dan melakukan proses Isi Data. Untuk memastikan bahwa Data Peserta adalah Asli (nama manusia, bukan kata benda, kata sifat maupun kata kerja) maka panitia menetapkan ketentuan: Nama, Email, No.HP, Tempat dan Tanggal Lahir.</li>
+                                <li>Peserta wajib mengisi Form yang tampil Pop Up pada saat proses game dimulai.</li>
+                                <li>Peserta tidak bisa dan tidak diperbolehkan memainkan game ini sesering dan sebanyak mungkin untuk meningkatkan kesempatan menang.</li>
+                                <li>Masa tayang game ini adalah dari tanggal 22 Agustus 2017 sampai dengan 31 Agustus 2018*</li>
+                                <li>Masa tayang game dapat berhenti sesuai ketentuan yang berlaku.</li>
+                                <li>Game ini bisa dimainkan pada perangkat selular smartphone dengan sistem operasi Apple (IOS) dan Android (versi 2.2 Froyo ke atas) dan Desktop.</li>
+                            <ul>
+                                <br>
+                                <p>Sistem penilaian adalah dilakukan dengan cara sebagai berikut:</p>
+                                <br>
+                                <ol>
+                                    <li>Memilih data yang masuk lebih dahulu dan pada urutan 100 data pertama diterima.</li>
+                                    <li>Data Peserta yg masuk 100 data pertama setiap harinya maka akan masuk ke dalam nominasi pemenang.</li>
+                                    <li>Setelah melalui poin diatas, panitia akan check: jumlah data dan verifikasi data (check data apakah data peserta asli atau tidak (verifikasi data).</li>
+                                    <li>Setelah melalui semua poin diatas, juri akan membuat TOP 10 winner setiap minggunya.</li>
+                                    <li>Pemain yang masuk nominasi pemenang adalah pemain yang telah memenuhi beberapa poin diatas.</li>
+                                    <li>Pemenang akan diumumkan melalui Email Blast setiap harinya. Kecuali Pemenang hari Sabtu dan Minggu akan diumumkan pada hari Senin.</li>
+                                </ol>
+                                <br>
+                            <ul>
+                                <li>Pemenang akan mendapatkan beraneka hadiah yang telah disediakan panitia.</li>
+                                <li>Pemain hanya mendapatkan satu kali kesempatan menjadi pemenang.</li>
+                                <li>Pemenang akan dihubungi langsung oleh Panitia. Panitia berhak mengecek keabsahan identitas pemenang (verifikasi data).</li>
+                                <li>Pemenang dipersilakan mengambil hadiah atau dikirim sesuai alamat pemenang.</li>
+                                <li>Jangka waktu pengambilan hadiah adalah 2 minggu. Jika dalam waktu 2 minggu hadiah tidak diambil, maka panitia berhak memilih pemenang lain tanpa pemberitahuan terlebih dahulu kepada pemenang sebelumnya.</li>
+                                <li>Panitia berhak mendiskualifikasi peserta dari game ini jika ditemukan kecurangan.</li>
+                                <li>Keputusan juri tidak dapat diganggu gugat.</li>
+                                <li>Hadiah tidak dapat diuangkan.</li>
+                                <li>PT Web Marketing Indonesia sebagai penyelenggara tidak memungut biaya apapun untuk promosi ini. Hati-hati terhadap penipuan.</li>
+                                <li>Untuk keterangan lebih lanjut, kamu bisa email: markerting@iproperty.com</li>
+                                <li>Promosi ini tidak berlaku bagi karyawan PT. Web Marketing Indonesia dan mitra penyelenggara atau setiap orang yang berhubungan dengan pembuatan dan persiapan terkait games ini.</li>
+                                <li>Syarat dan ketentuan di atas dapat berubah sewaktu-waktu tanpa pemberitahuan terlebih dahulu.</li>
+                            </ul>
+                        </div>
+                      </nav>
+                    </header>
+                    <div class="bannerfortune">
+                        <div id="carousel-id" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carousel-id" data-slide-to="0" class=""></li>
+                                    <li data-target="#carousel-id" data-slide-to="1" class=""></li>
+                                    <li data-target="#carousel-id" data-slide-to="2" class="active"></li>
+                                </ol>
+                                <div class="carousel-inner">
+                                    <div class="item">
+                                        <img data-src="" alt="First slide" src="https://d3p0bla3numw14.cloudfront.net/assets/image/banner-bni-fortune-800x1080-1.png" class="img-responsive center-block">
+                                        <div class="container">
+                                            <!-- <div class="carousel-caption">
+                                                <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <img data-src="" alt="Second slide" src="https://d3p0bla3numw14.cloudfront.net/assets/image/banner-bni-fortune-800x1080-2.png" class="img-responsive center-block">
+                                        <div class="container">
+                                            <!-- <div class="carousel-caption">
+                                                <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="item active">
+                                        <img data-src="" alt="Third slide" src="https://d3p0bla3numw14.cloudfront.net/assets/image/banner-bni-fortune-800x1080-3.png" class="img-responsive center-block">
+                                        <div class="container">
+                                            <!-- <div class="carousel-caption">
+                                                <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="left carousel-control" href="#carousel-id" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                                <a class="right carousel-control" href="#carousel-id" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                            </div>
+                    </div>      
+                </div>
+               <div class="col-md-7 col-sm-12">
+                    <div class="fortune">
+                        <div class="container-fluid center-block">
+                            <img src="http://origin-images.rumah123.com.s3.amazonaws.com/assets/showcase/r123-watermark.png" alt="" class="img-logo img-responsive center-block">
+                        </div>
+                        <div class="title-event container-fluid">
+                            <div class="row text-center">
+                                <div class="col-md-12">
+                                    <h1>123 Surprise</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div id="wheel">
+                                <div id="inner-wheel">
+                                    <div class="sec">
+                                        <div>
+                                          <span class="text">1</span>
+                                        </div>
+                                    </div>
+                                    <div class="sec">
+                                        <div>
+                                          <span class="text">2</span>
+                                        </div>
+                                    </div>
+                                    <div class="sec">
+                                        <div>
+                                           <span class="text">3</span>
+                                        </div>
+                                    </div>
+                                    <div class="sec">
+                                        <div>
+                                            <span class="text">4</span>
+                                        </div>
+                                    </div>
+                                    <div class="sec">
+                                        <div>
+                                           <span class="text">5</span>
+                                        </div>
+                                    </div>
+                                    <div class="sec">
+                                        <div>
+                                            <span class="text">6</span>
+                                        </div>
+                                    </div>
+                                    <div class="sec">
+                                        <div>
+                                            <span class="text">7</span>
+                                        </div>
+                                    </div>
+                                    <div class="sec">
+                                        <div>
+                                           <span class="text">8</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="spin" id="inner-spin" type="button" class="" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">
+                                    <div id="inner-spin"></div>
+                                </div>
+                                <div id="shine"></div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content modal-content-edit">
+                                        <div class="modal-body">
+                                            <div class="alert alert-danger notice-undian" role="alert"><span class="glyphicon glyphicon-remove"></span><p>Kamu sudah pernah mengikuti undian ini.</p></div>
+                                            <form>
+                                                <div class="form-group has-error required">
+                                                    <label class="col-sm-3 col-md-4 text-left">Nama</label>
+                                                    <div class="col-sm-9 col-md-7 bottom-space">
+                                                        <input type="text" class="form-control input-sm " placeholder="Nama Kamu" name="nama ">
+                                                        <label class="red-class input-error ">Wajib diisi.</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-error required">
+                                                    <label class="col-sm-3 col-md-4 text-left ">Email</label>
+                                                    <div class="col-sm-9 col-md-7  bottom-space">
+                                                        <input type="text" class="form-control input-sm " placeholder="Email Kamu" name="email">
+                                                        <label class="red-class input-error ">Wajib diisi.</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-error required ">
+                                                    <label class="col-sm-3 col-md-4 text-left ">No. Telepon</label>
+                                                    <div class="col-sm-9 col-md-7  bottom-space">
+                                                        <input type="textr" class="form-control input-sm " placeholder="No. Telepon Kamu" name="notlp">
+                                                        <label class="red-class input-error ">Wajib diisi.</label>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div class="form-group has-error required ">
+                                            <label class="col-sm-3 col-md-4 text-left">Tanggal Lahir</label>
+                                            <div class="col-sm-9 col-md-8 form-inline bottom-space">
+                                                <select name="tgl_lahir" class="form-control input-sm birth-date">
+                                                  <option value="" disabled="" selected="">- Tanggal -</option>
+                                                  <option value="01">01</option>
+                                                  <option value="02">02</option>
+                                                  <option value="03">03</option>
+                                                  <option value="04">04</option>
+                                                  <option value="05">05</option>
+                                                  <option value="06">06</option>
+                                                  <option value="07">07</option>
+                                                  <option value="08">08</option>
+                                                  <option value="09">09</option>
+                                                  <option value="10">10</option>
+                                                  <option value="11">11</option>
+                                                  <option value="12">12</option>
+                                                  <option value="13">13</option>
+                                                  <option value="14">14</option>
+                                                  <option value="15">15</option>
+                                                  <option value="16">16</option>
+                                                  <option value="17">17</option>
+                                                  <option value="18">18</option>
+                                                  <option value="19">19</option>
+                                                  <option value="20">20</option>
+                                                  <option value="21">21</option>
+                                                  <option value="22">22</option>
+                                                  <option value="23">23</option>
+                                                  <option value="24">24</option>
+                                                  <option value="25">25</option>
+                                                  <option value="26">26</option>
+                                                  <option value="27">27</option>
+                                                  <option value="28">28</option>
+                                                  <option value="29">29</option>
+                                                  <option value="30">30</option>
+                                                  <option value="31">31</option>
+                                                </select>
+                                                <select name="bln_lahir" class="form-control input-sm birth-date">
+                                                  <option value="" disabled="" selected="">- Bulan -</option>
+                                                  <option value="Januari">Januari</option>
+                                                  <option value="Februari">Februari</option>
+                                                  <option value="Maret">Maret</option>
+                                                  <option value="April">April</option>
+                                                  <option value="Mei">Mei</option>
+                                                  <option value="Juni">Juni</option>
+                                                  <option value="Juli">Juli</option>
+                                                  <option value="Agustus">Agustus</option>
+                                                  <option value="September">September</option>
+                                                  <option value="Oktober">Oktober</option>
+                                                  <option value="November">November</option>
+                                                  <option value="Desember">Desember</option>
+                                                </select>
+                                                <select name="thn_lahir" class="form-control input-sm">
+                                                  <option value="" disabled="" selected="">- Tahun -</option>
+                                                  <option value="1971">1964</option>
+                                                  <option value="1971">1965</option>
+                                                  <option value="1971">1966</option>
+                                                  <option value="1971">1967</option>
+                                                  <option value="1971">1968</option>
+                                                  <option value="1971">1969</option>
+                                                  <option value="1971">1970</option>
+                                                  <option value="1971">1971</option>
+                                                  <option value="1972">1972</option>
+                                                  <option value="1973">1973</option>
+                                                  <option value="1974">1974</option>
+                                                  <option value="1975">1975</option>
+                                                  <option value="1976">1976</option>
+                                                  <option value="1977">1977</option>
+                                                  <option value="1978">1978</option>
+                                                  <option value="1979">1979</option>
+                                                  <option value="1980">1980</option>
+                                                  <option value="1981">1981</option>
+                                                  <option value="1982">1982</option>
+                                                  <option value="1983">1983</option>
+                                                  <option value="1984">1984</option>
+                                                  <option value="1985">1985</option>
+                                                  <option value="1986">1986</option>
+                                                  <option value="1987">1987</option>
+                                                  <option value="1988">1988</option>
+                                                  <option value="1989">1989</option>
+                                                  <option value="1990">1990</option>
+                                                  <option value="1990">1991</option>
+                                                  <option value="1990">1992</option>
+                                                  <option value="1990">1993</option>
+                                                  <option value="1990">1994</option>
+                                                </select>
+                                                <label class="input-error red-class">Wajib diisi.</label>
+                                            </div>
+                                          </div>
+                                            <div class="row font-color-edit">
+                                                <div class="col-md-6">
+                                                    <p>Apakah kamu berbelanja online?</p>
+                                                </div>
+                                                <div class="radio-edit col-md-6">
+                                                    <form>
+                                                        <label class="radio-inline"></label>
+                                                        <input type="radio" name="optradio">ya
+                                                        <label class="radio-inline"></label>
+                                                        <input type="radio" name="optradio">tidak
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer modal-footer-edit">
+                                            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                                            <button id="submit-spin" type="button" class="btn btn-primary btn-primary-edit" data-toggle="modal" data-dismiss="modal" data-target="#success" data-whatever="@mdo">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content modal-content-edit">
+                                        <div class="modal-header modal-success">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h1 class="modal-title text-center" id="exampleModalLabel"></h1>
+                                            <img src="https://d3p0bla3numw14.cloudfront.net/assets/image/bni-congrats-box.png" alt="" class="img-responsive" style="max-width: 260px;">
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            <p>Selamat kamu memenangkan
+                                            <div class="alert alert-success text-success">Voucher Belanja sebesar 100K</div>
+                                            <p>Silahkan check email kamu..</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="failed" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content modal-content-edit">
+                                        <div class="modal-header modal-success">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h1 class="modal-title text-center" id="exampleModalLabel"></h1>
+                                            <img src="https://d3p0bla3numw14.cloudfront.net/assets/image/bni-failed-box.png" alt="" class="img-responsive" style="max-width: 260px;">
+                                        </div>
+                                        <div class="modal-body text-center text-failed">
+                                            <p>Maaf kamu kurang beruntung</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>    
+        </div>  
+    </div>
+    <!-- <script src='vendors/jQuery-min/jquery.js'></script> -->
+    <script src="assets/js/bni-wheel-of-fortune.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        jQuery(function($)
+        {
+            $(".info-fortune").click(function()
+            {
+                $(".navigation").toggleClass("open");
+            })
+        });
+    </script>
+</body>
+
+</html>
+
+</html>
